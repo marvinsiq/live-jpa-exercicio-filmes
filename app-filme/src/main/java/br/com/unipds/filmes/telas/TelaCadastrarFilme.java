@@ -8,11 +8,19 @@ import org.springframework.data.repository.Repository;
 
 import br.com.unipds.filmes.model.Filme;
 import br.com.unipds.filmes.repository.FilmeRepository;
+import org.springframework.stereotype.Component;
 
-public class TelaCadastrarFilme implements Tela<Filme, Integer> {
+@Component
+public class TelaCadastrarFilme implements Tela {
+
+    private final FilmeRepository repo;
+
+    public TelaCadastrarFilme(FilmeRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
-    public void executar(Scanner entrada, Repository<Filme, Integer> repositorio) {
+    public void executar(Scanner entrada) {
         Filme f = new Filme();
 
         System.out.println("\n*****************");
@@ -34,7 +42,7 @@ public class TelaCadastrarFilme implements Tela<Filme, Integer> {
 
         entrada.nextLine();// Tira o ENTER
 
-        ((FilmeRepository)repositorio).save(f);
+        repo.save(f);
         System.out.println("\nFilme cadastrado com sucesso.");
     }
     

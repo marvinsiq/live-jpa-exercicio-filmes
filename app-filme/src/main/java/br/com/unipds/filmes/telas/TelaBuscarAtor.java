@@ -6,11 +6,19 @@ import java.util.Scanner;
 import br.com.unipds.filmes.model.Ator;
 import br.com.unipds.filmes.repository.AtorRepository;
 import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Component;
 
-public class TelaBuscarAtor implements Tela<Ator, Integer> {
+@Component
+public class TelaBuscarAtor implements Tela {
+
+    private final AtorRepository repo;
+
+    public TelaBuscarAtor(AtorRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
-    public void executar(Scanner entrada, Repository<Ator, Integer> repositorio) {
+    public void executar(Scanner entrada) {
         System.out.println("\n**************");
         System.out.println("Busca de Ator");
         System.out.println("**************");
@@ -19,7 +27,7 @@ public class TelaBuscarAtor implements Tela<Ator, Integer> {
         String busca = entrada.nextLine();
 
         //TODO implementar busca por nome case insensitive em ordem crescente
-        List<Ator> resultado = ((AtorRepository) repositorio).findByNomeContainsIgnoreCaseOrderByNomeAsc(busca);
+        List<Ator> resultado = repo.findByNomeContainsIgnoreCaseOrderByNomeAsc(busca);
 
         if(resultado.isEmpty()) {
             System.out.println("\nNão foram encontrados atores com o parâmetro informado.");

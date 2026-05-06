@@ -5,12 +5,19 @@ import java.util.Scanner;
 import org.springframework.data.repository.Repository;
 import br.com.unipds.filmes.model.Ator;
 import br.com.unipds.filmes.repository.AtorRepository;
+import org.springframework.stereotype.Component;
 
-public class TelaListarAtores implements Tela<Ator, Integer>{
+@Component
+public class TelaListarAtores implements Tela {
+
+    private final AtorRepository repo;
+
+    public TelaListarAtores(AtorRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
-    public void executar(Scanner entrada, Repository<Ator, Integer> repositorio) {
-        AtorRepository repo = (AtorRepository)repositorio;
+    public void executar(Scanner entrada) {
         List<Ator> atores = repo.findAll();
 
         if(atores.isEmpty()) {

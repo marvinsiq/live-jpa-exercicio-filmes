@@ -6,11 +6,19 @@ import org.springframework.data.repository.Repository;
 
 import br.com.unipds.filmes.model.Ator;
 import br.com.unipds.filmes.repository.AtorRepository;
+import org.springframework.stereotype.Component;
 
-public class TelaCadastrarAtor implements Tela<Ator, Integer> {
+@Component
+public class TelaCadastrarAtor implements Tela {
+
+    private final AtorRepository repo;
+
+    public TelaCadastrarAtor(AtorRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
-    public void executar(Scanner entrada, Repository<Ator, Integer> repositorio) {
+    public void executar(Scanner entrada) {
         Ator a = new Ator();
 
         System.out.println("\n*****************");
@@ -23,8 +31,8 @@ public class TelaCadastrarAtor implements Tela<Ator, Integer> {
         a.setSobrenome(entrada.nextLine());
         System.out.print("Sexo (F/M): ");
         a.setSexo(entrada.next().charAt(0));
-       
-        ((AtorRepository)repositorio).save(a);
+
+        repo.save(a);
         System.out.println("\nAtor cadastrado com sucesso.");
     }
         

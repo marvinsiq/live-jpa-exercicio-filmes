@@ -1,27 +1,25 @@
 package br.com.unipds.filmes.telas;
 
-import java.util.Scanner;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Component;
 
-import br.com.unipds.filmes.repository.AtorRepository;
-import br.com.unipds.filmes.repository.FilmeRepository;
+import java.util.Map;
+import java.util.Scanner;
 
 @Component
 public class LoopPrincipal {
-    @Autowired
-    private ApplicationContext context;
+
+    private final Map<String, Tela> telas;
+
+    public LoopPrincipal(Map<String, Tela> telas) {
+        this.telas = telas;
+    }
 
     public void loop() {
         int opcao;
         Scanner entrada = new Scanner(System.in);
 
         do {
-            Tela tela = null;
-            Repository repositorio = null;
+            String nomeBeanTela = null;
             limparTela();
             
             System.out.println("**************");
@@ -40,29 +38,23 @@ public class LoopPrincipal {
 
             switch (opcao) {
                 case 1:
-                    tela = new TelaBuscarFilme();
-                    repositorio = context.getBean(FilmeRepository.class);
+                    nomeBeanTela = "telaBuscarFilme";
                     break;
                 case 2:
-                    tela = new TelaCadastrarFilme();
-                    repositorio = context.getBean(FilmeRepository.class);
+                    nomeBeanTela = "telaCadastrarFilme";
                     break;
                 case 3:
-                    tela = new TelaListarFilmes();
-                    repositorio = context.getBean(FilmeRepository.class);
+                    nomeBeanTela = "telaListarFilmes";
                     break;
                 case 4:
-                    tela = new TelaBuscarAtor();
-                    repositorio = context.getBean(AtorRepository.class);
+                    nomeBeanTela = "telaBuscarAtor";
                     break;
                 case 5:
-                    tela = new TelaCadastrarAtor();
-                    repositorio = context.getBean(AtorRepository.class);
+                    nomeBeanTela = "telaCadastrarAtor";
                     break;
                 case 6:
-                    tela = new TelaListarAtores();
-                    repositorio = context.getBean(AtorRepository.class);
-                    break;    
+                    nomeBeanTela = "telaListarAtores";
+                    break;
                 case 0:
                     System.out.println("Fim do programa!");
                     break;
@@ -72,9 +64,10 @@ public class LoopPrincipal {
                     break;
             }
 
-            if(tela != null) {
+            if(nomeBeanTela != null) {
                 limparTela();
-                tela.executar(entrada, repositorio);
+                Tela tela = telas.get(nomeBeanTela);
+                tela.executar(entrada);
                 voltarMenu(entrada);
             }
         } while(opcao != 0);
