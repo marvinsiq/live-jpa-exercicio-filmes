@@ -2,7 +2,6 @@ package br.com.unipds.filmes.telas;
 
 import br.com.unipds.filmes.model.Filme;
 import br.com.unipds.filmes.repository.FilmeRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,10 +33,10 @@ class TelaBuscarFilmeTest {
     void deveExibirMensagemQuandoOFilmeNaoExiste() {
         FilmeRepository repoMock = mock(FilmeRepository.class);
 
-        var tela = new TelaBuscarFilme();
+        var tela = new TelaBuscarFilme(repoMock);
         var entradaFake = new Scanner("Matrix\n");
 
-        tela.executar(entradaFake, repoMock);
+        tela.executar(entradaFake);
 
         String saida = consoleOutput.toString();
         assertThat(saida).contains("Não foram encontrados filmes");
@@ -53,10 +52,10 @@ class TelaBuscarFilmeTest {
         Mockito.when(repoMock.findByTituloContainsIgnoreCaseOrderByTituloAsc("Top Gun: Maverick"))
                 .thenReturn(List.of(filme));
 
-        var tela = new TelaBuscarFilme();
+        var tela = new TelaBuscarFilme(repoMock);
         var entradaFake = new Scanner("Top Gun: Maverick\n");
 
-        tela.executar(entradaFake, repoMock);
+        tela.executar(entradaFake);
 
         String saida = consoleOutput.toString();
         assertThat(saida).contains("Resultado da busca");
