@@ -21,7 +21,7 @@ public class LoopPrincipal {
         do {
             String nomeBeanTela = null;
             limparTela();
-            
+
             System.out.println("**************");
             System.out.println("MENU PRINCIPAL");
             System.out.println("**************");
@@ -34,43 +34,22 @@ public class LoopPrincipal {
             System.out.println("0 - Sair");
             System.out.print("Opção: ");
             opcao = entrada.nextInt();
-            entrada.nextLine(); 
+            entrada.nextLine();
 
-            switch (opcao) {
-                case 1:
-                    nomeBeanTela = "telaBuscarFilme";
-                    break;
-                case 2:
-                    nomeBeanTela = "telaCadastrarFilme";
-                    break;
-                case 3:
-                    nomeBeanTela = "telaListarFilmes";
-                    break;
-                case 4:
-                    nomeBeanTela = "telaBuscarAtor";
-                    break;
-                case 5:
-                    nomeBeanTela = "telaCadastrarAtor";
-                    break;
-                case 6:
-                    nomeBeanTela = "telaListarAtores";
-                    break;
-                case 0:
-                    System.out.println("Fim do programa!");
-                    break;
-                default:
-                    System.out.println("\nOpção inválida!");
-                    voltarMenu(entrada);
-                    break;
-            }
-
-            if(nomeBeanTela != null) {
+            MenuOpcao opcaoSelecionada = MenuOpcao.porCodigo(opcao);
+            if (opcaoSelecionada != null && opcaoSelecionada != MenuOpcao.SAIR) {
                 limparTela();
-                Tela tela = telas.get(nomeBeanTela);
+                Tela tela = telas.get(opcaoSelecionada.getNomeBean());
                 tela.executar(entrada);
                 voltarMenu(entrada);
+            } else if (opcaoSelecionada == MenuOpcao.SAIR) {
+                System.out.println("Fim do programa!");
+            } else {
+                System.out.println("\nOpção inválida!");
+                voltarMenu(entrada);
             }
-        } while(opcao != 0);
+
+        } while (opcao != 0);
 
         entrada.close();
     }
@@ -82,7 +61,8 @@ public class LoopPrincipal {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             else
                 System.out.print("\033[H\033[2J");
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     private void voltarMenu(Scanner entrada) {

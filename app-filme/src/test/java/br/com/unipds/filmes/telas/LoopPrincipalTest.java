@@ -64,4 +64,23 @@ class LoopPrincipalTest extends AbstractTelaTest {
         assertThat(saida).contains("Opção inválida!");
         assertThat(saida).contains("Pressione ENTER para continuar...");
     }
+    @Test
+    void deveChamarTelaCadastrarAtor() {
+        Tela telaCadastrarAtorMock = mock(Tela.class);
+        Map<String, Tela> telas = new HashMap<>();
+        telas.put("telaCadastrarAtor", telaCadastrarAtorMock);
+
+        LoopPrincipal loopPrincipal = new LoopPrincipal(telas);
+
+        // Simula a entrada do usuário: 5 (Incluir ator), depois Enter (voltarMenu), depois 0 (Sair)
+        System.setIn(new java.io.ByteArrayInputStream("5\n\n0\n".getBytes()));
+
+        loopPrincipal.loop();
+
+        verify(telaCadastrarAtorMock).executar(any());
+        
+        String saida = obterSaidaDoConsole();
+        assertThat(saida).contains("MENU PRINCIPAL");
+        assertThat(saida).contains("Fim do programa!");
+    }
 }
