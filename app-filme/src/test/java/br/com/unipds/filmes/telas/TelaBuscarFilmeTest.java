@@ -5,6 +5,7 @@ import br.com.unipds.filmes.repository.FilmeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.*;
@@ -62,7 +63,8 @@ class TelaBuscarFilmeTest {
         assertThat(saida).contains("Top Gun: Maverick");
         assertThat(saida).contains("1 filme(s) encontrado(s).");
 
-//        Mockito.verifyNoMoreInteractions(repoMock);
+        Mockito.verify(repoMock).findByTituloContainsIgnoreCaseOrderByTituloAsc("Top Gun: Maverick");
+        Mockito.verifyNoMoreInteractions(repoMock);
     }
 
 }
