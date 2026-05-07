@@ -2,34 +2,17 @@ package br.com.unipds.filmes.telas;
 
 import br.com.unipds.filmes.model.Filme;
 import br.com.unipds.filmes.repository.FilmeRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TelaCadastrarFilmeTest {
-
-    private final ByteArrayOutputStream consoleOutput = new ByteArrayOutputStream();
-    private final PrintStream outOriginal = System.out;
-
-    @BeforeEach
-    void setUp() {
-        System.setOut(new PrintStream(consoleOutput));
-    }
-
-    @AfterEach
-    void tearDown() {
-        System.setOut(outOriginal);
-    }
+class TelaCadastrarFilmeTest extends AbstractTelaTest {
 
     @Test
     void deveCadastrarFilmeComSucesso() {
@@ -64,8 +47,7 @@ class TelaCadastrarFilmeTest {
         assertEquals(ano, filmeSalvo.getAno());
         assertEquals(duracao, filmeSalvo.getDuracao());
 
-        String saida = consoleOutput.toString();
+        String saida = obterSaidaDoConsole();
         assertThat(saida).contains("Filme cadastrado com sucesso.");
     }
-
 }
